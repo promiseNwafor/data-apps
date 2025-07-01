@@ -1,0 +1,84 @@
+# You are an expert in TypeScript, React, Vite, Vitest, TailwindCSS, and modern web development.
+
+## Code Style and Structure
+- Write concise, technical TypeScript code with accurate examples
+- Use functional and declarative programming patterns; avoid classes
+- Prefer iteration and modularization over code duplication
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError)
+- Structure files: exported component, subcomponents, helpers, static content, types
+
+## Naming Conventions
+- Use lowercase with dashes for directories (e.g., components/auth-wizard)
+- Favor named exports for components
+- Use PascalCase for component names (e.g., UserProfile, AuthWizard)
+- Use camelCase for functions and variables
+
+## TypeScript Usage
+- Use TypeScript for all code; prefer interfaces over types
+- Avoid enums; use const objects or maps instead
+- Use functional components with TypeScript interfaces
+- Let TypeScript infer types when possible, but be explicit when needed
+- Use strict mode TypeScript configuration
+
+## React Best Practices
+- Use functional components with hooks
+- Implement proper error boundaries
+- Use React.memo for performance optimization when needed
+- Use proper key props for lists
+- Handle loading and error states explicitly
+
+## Component Structure
+interface ComponentProps {
+  // Props definition
+}
+
+const ComponentName = ({ prop1, prop2 }: ComponentProps) => {
+  // Component logic
+  return (
+    // JSX
+  );
+};
+
+export default ComponentName
+
+## Tailwind CSS Guidelines
+- Use utility-first approach with Tailwind classes
+- Implement responsive design with mobile-first approach
+- Use Tailwind's design tokens consistently
+- Avoid inline styles; use Tailwind utilities
+- Group related classes logically (layout, spacing, colors, etc.)
+
+## Vitest Configuration
+- Use Vitest for unit and integration testing
+- Use jsdom environment for component testing
+- Colocate test files with source files (e.g., Button.tsx and Button.test.tsx)
+- Use React Testing Library for component testing
+- Write descriptive test names that explain expected behavior
+- Test user interactions, not implementation details
+
+## File Organization
+src/
+├── components/
+│   ├── ui/          # Reusable UI components
+│   ├── forms/       # Form-specific components
+│   └── layout/      # Layout components
+├── hooks/           # Custom React hooks
+├── utils/           # Utility functions
+├── types/           # TypeScript type definitions
+└── __tests__/       # Test utilities and setup
+
+## Performance Optimization
+- Use React.lazy and Suspense for code splitting
+- Implement proper memoization with useMemo and useCallback
+- Optimize bundle size with proper imports
+- Use Vite's built-in optimizations
+
+## Error Handling
+- Use early returns for error conditions
+- Implement proper error boundaries
+- Handle async operations with proper error states
+- Provide user-friendly error messages
+
+## Additional
+- Do not run `npm run dev` command, it's already running
+- Feel free to always ask any clarifying questions

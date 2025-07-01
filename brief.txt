@@ -1,0 +1,59 @@
+1. Warm-up & Foundational Concepts (10-15 minutes)
+
+We'll start with a few conceptual questions to understand your perspective on our approach and core technologies.
+
+AI-Assisted Development Philosophy:
+
+"At Canva, we explicitly encourage and expect candidates to use AI tools like GitHub Copilot or Cursor during technical interviews. 
+From your perspective, what are the primary benefits of integrating AI into a developer's daily workflow, and what are some critical 
+considerations or potential pitfalls one must be mindful of when relying on AI for code generation?"    
+"Can you share an example from your past experience where an AI tool significantly accelerated your development or helped you solve a tricky problem? Conversely, 
+describe a situation where AI assistance led you down a wrong path or introduced a challenge you had to overcome, and how you rectified it."    
+Canva's Frontend Stack & Data Focus:
+
+"Our teams heavily utilize React and TypeScript, alongside functional reactive programming patterns like MobX and RxJS, 
+especially within our Data Workflows and Charts teams. Why do you think these technologies are particularly well-suited for building highly interactive and data-intensive applications like those at Canva?"
+
+================================================================================================================================================================================
+
+2. Coding Challenge: Interactive Data Transformation & Visualization Component (45-60 minutes)
+
+This is a hands-on coding challenge. I'll provide you with a problem, and I encourage you to use your preferred AI tools throughout the process. 
+Please share your screen, and talk through your thought process, including how you're prompting the AI and evaluating its suggestions.
+
+Problem Statement:
+
+You are tasked with building a React and TypeScript component called DataExplorer that allows users to upload a simple dataset (simulated as a string of CSV data), 
+perform basic transformations, and visualize a subset of the transformed data.
+
+Requirements:
+
+Data Input & Parsing:
+
+The component should accept a raw CSV string as input (you can use a predefined mock CSV string for demonstration).
+Implement logic to parse this CSV string into a structured array of JavaScript objects (e.g., Array<{ [key: string]: string | number }>).
+
+Provide a user interface that allows for at least two of the following transformations on the parsed data:
+Filtering: Filter rows based on a specific column's value (e.g., "Show only sales from 'Region A'").
+Sorting: Sort the data by a selected column (ascending/descending).
+Aggregation: Group data by a column and calculate a sum or average of another numeric column (e.g., "Total sales per region").
+Display the transformed data in a simple HTML table. 
+Basic Data Visualization:
+
+Integrate a very basic visualization (e.g., a simple bar chart or line chart using SVG or HTML Canvas, 
+or a minimal charting library if you're familiar with one and can quickly set it up) that displays a subset of the transformed data. For example, if you implemented aggregation, visualize the aggregated results.
+Technical Considerations:
+
+Use React with TypeScript.
+Ensure the component is reasonably performant for a dataset of up to 100-200 rows.
+Write unit tests for your data parsing and at least one of your data transformation functions.
+Focus on clean, readable, and maintainable code.
+
+Mock CSV Data Example:
+Region,Product,Sales,Date
+North,Laptop,1200,2024-01-15
+South,Mouse,50,2024-01-20
+North,Keyboard,150,2024-01-22
+East,Laptop,1500,2024-02-01
+South,Laptop,1000,2024-02-05
+North,Mouse,75,2024-02-10
