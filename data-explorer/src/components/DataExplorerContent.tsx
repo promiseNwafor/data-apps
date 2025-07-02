@@ -5,7 +5,7 @@ import AggregationTable from './AggregationTable';
 import FileUpload from './FileUpload';
 import CustomBarChart from './BarChart';
 import { BarChart3, Table, FileSpreadsheet, Filter, ArrowUpDown } from 'lucide-react';
-import { useDataExplorer } from '../context/DataExplorerContext';
+import { useDataExplorer } from '../context/useDataExplorer';
 
 const DataExplorerContent: React.FC = () => {
   const {

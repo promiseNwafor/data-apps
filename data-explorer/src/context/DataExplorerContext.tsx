@@ -1,61 +1,8 @@
-import React, { createContext, useContext, useState, useTransition, useMemo, useCallback, type ReactNode } from 'react';
-import { parseCSV, type DataRow } from '../utils/csvParser';
-import { filterData, sortData, aggregateData, type FilterOption, type SortOption, type AggregationResult } from '../utils/dataTransforms';
+import React, { useState, useTransition, useMemo, type ReactNode } from 'react';
+import { parseCSV } from '../utils/csvParser';
+import { filterData, sortData, aggregateData, type FilterOption, type SortOption } from '../utils/dataTransforms';
 import { debounce, PerformanceMonitor } from '../utils/performance';
-
-interface DataExplorerState {
-  // Data state
-  csvData?: string;
-  fileName: string;
-  parsedData: DataRow[];
-  transformedData: DataRow[];
-  aggregationData: AggregationResult[];
-  
-  // Loading state
-  isPending: boolean;
-  
-  // Filter state
-  filter: FilterOption;
-  
-  // Sort state
-  sort: SortOption;
-  
-  // Aggregation state
-  showAggregation: boolean;
-  aggregateBy: string;
-  aggregateColumn: string;
-  
-  // Chart state
-  showChart: boolean;
-}
-
-interface DataExplorerActions {
-  // File actions
-  handleFileUpload: (content: string, name: string) => void;
-  
-  // Filter actions
-  setFilter: (filter: FilterOption) => void;
-  setFilterDebounced: (filter: FilterOption) => void;
-  
-  // Sort actions
-  setSort: (sort: SortOption) => void;
-  
-  // Aggregation actions
-  setShowAggregation: (show: boolean) => void;
-  setAggregateBy: (column: string) => void;
-  setAggregateColumn: (column: string) => void;
-  
-  // Chart actions
-  setShowChart: (show: boolean) => void;
-  
-  // Reset actions
-  resetFilters: () => void;
-  clearData: () => void;
-}
-
-type DataExplorerContextType = DataExplorerState & DataExplorerActions;
-
-const DataExplorerContext = createContext<DataExplorerContextType | undefined>(undefined);
+import { DataExplorerContext, type DataExplorerContextType } from './context';
 
 interface DataExplorerProviderProps {
   children: ReactNode;
@@ -158,11 +105,11 @@ export const DataExplorerProvider: React.FC<DataExplorerProviderProps> = ({
   };
 
   // Debounced filter for better performance during typing
-  const setFilterDebounced = useCallback(
-    debounce((filter: FilterOption) => {
+  const setFilterDebounced = useMemo(
+    () => debounce((filter: FilterOption) => {
       setFilter(filter);
     }, 300),
-    []
+    [setFilter]
   );
 
   const contextValue: DataExplorerContextType = {
@@ -200,10 +147,3 @@ export const DataExplorerProvider: React.FC<DataExplorerProviderProps> = ({
   );
 };
 
-export const useDataExplorer = (): DataExplorerContextType => {
-  const context = useContext(DataExplorerContext);
-  if (context === undefined) {
-    throw new Error('useDataExplorer must be used within a DataExplorerProvider');
-  }
-  return context;
-};

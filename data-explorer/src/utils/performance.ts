@@ -3,6 +3,7 @@
  */
 
 // Debounce function for search/filter inputs
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
@@ -10,11 +11,12 @@ export function debounce<T extends (...args: any[]) => any>(
   let timeout: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(null, args), wait);
+    timeout = setTimeout(() => func(...args), wait);
   };
 }
 
 // Throttle function for scroll events or frequent updates
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function throttle<T extends (...args: any[]) => any>(
   func: T,
   limit: number
@@ -22,7 +24,7 @@ export function throttle<T extends (...args: any[]) => any>(
   let inThrottle: boolean;
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
-      func.apply(null, args);
+      func(...args);
       inThrottle = true;
       setTimeout(() => (inThrottle = false), limit);
     }
@@ -85,11 +87,11 @@ export function processDataInBatches<T, R>(
 }
 
 // Optimize aggregation for large datasets
-export function optimizedGroupBy<T>(
+export function optimizedGroupBy<T, R = T[]>(
   data: T[],
   keySelector: (item: T) => string | number,
-  aggregator?: (items: T[]) => any
-): Map<string | number, T[] | any> {
+  aggregator?: (items: T[]) => R
+): Map<string | number, T[] | R> {
   const groups = new Map<string | number, T[]>();
   
   // Single pass grouping
@@ -103,7 +105,7 @@ export function optimizedGroupBy<T>(
   
   // Apply aggregation if provided
   if (aggregator) {
-    const aggregatedGroups = new Map();
+    const aggregatedGroups = new Map<string | number, R>();
     for (const [key, items] of groups) {
       aggregatedGroups.set(key, aggregator(items));
     }

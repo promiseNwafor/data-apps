@@ -2,7 +2,7 @@ import React from 'react';
 import { Settings, Filter, ArrowUpDown, BarChart3 } from 'lucide-react';
 import type { FilterOption } from '../utils/dataTransforms';
 import { getColumnNames, getColumnType } from '../utils/csvParser';
-import { useDataExplorer } from '../context/DataExplorerContext';
+import { useDataExplorer } from '../context/useDataExplorer';
 
 const ControlPanel: React.FC = () => {
   const {
