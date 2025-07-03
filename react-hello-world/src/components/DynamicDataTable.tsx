@@ -16,6 +16,10 @@ const DynamicDataTable: React.FC<DynamicDataTableProps> = ({ data }) => {
   );
   const [nameFilter, setNameFilter] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<string>('');
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof Item | null;
+    direction: 'asc' | 'desc';
+  }>({ key: null, direction: 'asc' });
 
   const visibleColumnConfigs = useMemo(() => 
     columns.filter(col => visibleColumns.includes(col.key)),
@@ -32,12 +36,41 @@ const DynamicDataTable: React.FC<DynamicDataTableProps> = ({ data }) => {
     });
   }, [data, nameFilter, categoryFilter]);
 
+  const sortedData = useMemo(() => {
+    if (!sortConfig.key) return filteredData;
+
+    return [...filteredData].sort((a, b) => {
+      const aValue = a[sortConfig.key!];
+      const bValue = b[sortConfig.key!];
+
+      if (aValue < bValue) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [filteredData, sortConfig]);
+
   const handleColumnToggle = (columnKey: string) => {
     setVisibleColumns(prev => 
       prev.includes(columnKey)
         ? prev.filter(key => key !== columnKey)
         : [...prev, columnKey]
     );
+  };
+
+  const handleSort = (columnKey: keyof Item) => {
+    setSortConfig(prev => ({
+      key: columnKey,
+      direction: prev.key === columnKey && prev.direction === 'asc' ? 'desc' : 'asc'
+    }));
+  };
+
+  const getSortIcon = (columnKey: string) => {
+    if (sortConfig.key !== columnKey) return '↕';
+    return sortConfig.direction === 'asc' ? '↑' : '↓';
   };
 
   const formatCellValue = (item: Item, key: keyof Item) => {
@@ -113,15 +146,16 @@ const DynamicDataTable: React.FC<DynamicDataTableProps> = ({ data }) => {
               {visibleColumnConfigs.map(column => (
                 <th 
                   key={column.key}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort(column.key as keyof Item)}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 select-none"
                 >
-                  {column.label} ↕
+                  {column.label} {getSortIcon(column.key)}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredData.map((item, index) => (
+            {sortedData.map((item, index) => (
               <tr key={item.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                 {visibleColumnConfigs.map(column => (
                   <td key={column.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
