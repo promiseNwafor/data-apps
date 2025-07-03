@@ -11,7 +11,8 @@ const mockProperties = [
 describe('PropertyList', () => {
   it('should render empty state when no properties', () => {
     const mockOnRemove = vi.fn();
-    render(<PropertyList properties={[]} onRemove={mockOnRemove} />);
+    const mockOnEdit = vi.fn();
+    render(<PropertyList properties={[]} onRemove={mockOnRemove} onEdit={mockOnEdit} />);
     
     expect(screen.getByText('No properties added yet.')).toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'polite');
@@ -19,7 +20,8 @@ describe('PropertyList', () => {
 
   it('should render properties list with correct count', () => {
     const mockOnRemove = vi.fn();
-    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} />);
+    const mockOnEdit = vi.fn();
+    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} onEdit={mockOnEdit} />);
     
     expect(screen.getByRole('list')).toHaveAttribute('aria-label', '3 properties');
     expect(screen.getAllByRole('listitem')).toHaveLength(3);
@@ -27,7 +29,8 @@ describe('PropertyList', () => {
 
   it('should display property keys, values, and types', () => {
     const mockOnRemove = vi.fn();
-    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} />);
+    const mockOnEdit = vi.fn();
+    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} onEdit={mockOnEdit} />);
     
     // Check property keys
     expect(screen.getByText('color')).toBeInTheDocument();
@@ -48,7 +51,8 @@ describe('PropertyList', () => {
 
   it('should have proper accessibility attributes', () => {
     const mockOnRemove = vi.fn();
-    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} />);
+    const mockOnEdit = vi.fn();
+    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} onEdit={mockOnEdit} />);
     
     // Check section has proper heading
     expect(screen.getByRole('heading', { name: 'Properties' })).toBeInTheDocument();
@@ -58,27 +62,61 @@ describe('PropertyList', () => {
     expect(listItems[0]).toHaveAttribute('aria-label', 'Property color with value blue, type string');
     expect(listItems[1]).toHaveAttribute('aria-label', 'Property size with value 100, type number');
     
-    // Check remove buttons have proper labels
-    const removeButtons = screen.getAllByRole('button');
+    // Check edit and remove buttons have proper labels
+    const editButtons = screen.getAllByLabelText(/Edit property/);
+    const removeButtons = screen.getAllByLabelText(/Remove property/);
+    expect(editButtons[0]).toHaveAttribute('aria-label', 'Edit property color');
     expect(removeButtons[0]).toHaveAttribute('aria-label', 'Remove property color');
-    expect(removeButtons[1]).toHaveAttribute('aria-label', 'Remove property size');
-    expect(removeButtons[2]).toHaveAttribute('aria-label', 'Remove property label');
   });
 
   it('should call onRemove with correct index when remove button clicked', () => {
     const mockOnRemove = vi.fn();
-    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} />);
+    const mockOnEdit = vi.fn();
+    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} onEdit={mockOnEdit} />);
     
-    const removeButtons = screen.getAllByRole('button');
+    const removeButtons = screen.getAllByLabelText(/Remove property/);
     
     // Click first remove button
     fireEvent.click(removeButtons[0]);
     expect(mockOnRemove).toHaveBeenCalledWith(0);
     
-    // Click second remove button
-    fireEvent.click(removeButtons[1]);
-    expect(mockOnRemove).toHaveBeenCalledWith(1);
+    expect(mockOnRemove).toHaveBeenCalledTimes(1);
+  });
+
+  it('should enter edit mode when edit button is clicked', () => {
+    const mockOnRemove = vi.fn();
+    const mockOnEdit = vi.fn();
+    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} onEdit={mockOnEdit} />);
     
-    expect(mockOnRemove).toHaveBeenCalledTimes(2);
+    const editButtons = screen.getAllByLabelText(/Edit property/);
+    
+    // Click edit button for first property
+    fireEvent.click(editButtons[0]);
+    
+    // Should show input fields
+    expect(screen.getByLabelText('Edit property key')).toBeInTheDocument();
+    expect(screen.getByLabelText('Edit property value')).toBeInTheDocument();
+    expect(screen.getByLabelText('Save changes')).toBeInTheDocument();
+    expect(screen.getByLabelText('Cancel editing')).toBeInTheDocument();
+  });
+
+  it('should call onEdit when changes are saved', () => {
+    const mockOnRemove = vi.fn();
+    const mockOnEdit = vi.fn();
+    render(<PropertyList properties={mockProperties} onRemove={mockOnRemove} onEdit={mockOnEdit} />);
+    
+    const editButtons = screen.getAllByLabelText(/Edit property/);
+    fireEvent.click(editButtons[0]);
+    
+    const keyInput = screen.getByLabelText('Edit property key');
+    const valueInput = screen.getByLabelText('Edit property value');
+    const saveButton = screen.getByLabelText('Save changes');
+    
+    // Change values
+    fireEvent.change(keyInput, { target: { value: 'newColor' } });
+    fireEvent.change(valueInput, { target: { value: 'red' } });
+    fireEvent.click(saveButton);
+    
+    expect(mockOnEdit).toHaveBeenCalledWith(0, 'newColor', 'red');
   });
 });

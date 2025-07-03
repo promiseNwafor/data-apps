@@ -51,7 +51,7 @@ const PropertyEditor: React.FC<PropertyEditorProps> = ({
     clearErrors
   } = form;
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: 'properties',
   });
@@ -96,6 +96,33 @@ const PropertyEditor: React.FC<PropertyEditorProps> = ({
     onChange?.(updatedProperties.filter((_, i) => i !== index));
   };
 
+  const editProperty = (index: number, key: string, value: string | number) => {
+    // Check for key uniqueness (excluding current property)
+    const currentProperties = getValues('properties') as Property[];
+    const keyExists = currentProperties.some((prop, i) => 
+      i !== index && prop.key.toLowerCase() === key.toLowerCase()
+    );
+    
+    if (keyExists) {
+      setError(`properties.${index}.key`, {
+        type: 'manual',
+        message: `Key '${key}' already exists`
+      });
+      return;
+    }
+
+    // Clear any existing errors for this property
+    clearErrors(`properties.${index}.key`);
+
+    // Update the property using useFieldArray's update method
+    const currentField = fields[index];
+    update(index, { ...currentField, key, value });
+    
+    // Call onChange with updated properties
+    const updatedProperties = getValues('properties') as Property[];
+    onChange?.(updatedProperties);
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <Card>
@@ -106,7 +133,8 @@ const PropertyEditor: React.FC<PropertyEditorProps> = ({
           
           <PropertyList 
             properties={fields} 
-            onRemove={removeProperty} 
+            onRemove={removeProperty}
+            onEdit={editProperty}
           />
 
           <AddPropertyForm 
