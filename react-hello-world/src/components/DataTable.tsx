@@ -23,7 +23,7 @@ export const DataTable: React.FC = React.memo(() => {
 
   const renderCellValue = useCallback((item: Item, columnKey: keyof Item) => {
     if (columnKey === 'status') {
-      return renderStatusCell(item[columnKey] as string);
+      return renderStatusCell(item.status);
     }
     return formatCellValue(item, columnKey);
   }, [formatCellValue, renderStatusCell]);
@@ -39,7 +39,7 @@ export const DataTable: React.FC = React.memo(() => {
                 onClick={() => handleSort(column.key as keyof Item)}
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 select-none"
               >
-                {column.label} {getSortIcon(column.key)}
+                {column.label} {getSortIcon(column.key as keyof Item)}
               </th>
             ))}
           </tr>

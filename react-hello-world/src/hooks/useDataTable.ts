@@ -1,17 +1,17 @@
 import { useState, useMemo, useCallback } from 'react';
-import type { Item } from '../types';
+import type { Item, ColumnConfig } from '../types';
 
 interface UseDataTableProps {
   data: Item[];
 }
 
-const COLUMNS = [
+const COLUMNS: ColumnConfig[] = [
   { key: 'id', label: 'ID' },
   { key: 'name', label: 'Name' },
   { key: 'category', label: 'Category' },
   { key: 'value', label: 'Value' },
   { key: 'status', label: 'Status' }
-] as const;
+];
 
 export const useDataTable = ({ data }: UseDataTableProps) => {
   const columns = COLUMNS;
@@ -73,7 +73,7 @@ export const useDataTable = ({ data }: UseDataTableProps) => {
     }));
   }, []);
 
-  const getSortIcon = useCallback((columnKey: string) => {
+  const getSortIcon = useCallback((columnKey: keyof Item) => {
     if (sortConfig.key !== columnKey) return '↕';
     return sortConfig.direction === 'asc' ? '↑' : '↓';
   }, [sortConfig]);

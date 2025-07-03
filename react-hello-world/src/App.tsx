@@ -1,12 +1,5 @@
 import DynamicDataTable from './components/DynamicDataTable';
-
-interface Item {
-  id: string;
-  name: string;
-  category: string;
-  value: number;
-  status: 'Active' | 'Inactive' | 'Pending';
-}
+import type { Item } from './types';
 
 const mockData: Item[] = [
   { id: '1', name: 'Widget A', category: 'Electronics', value: 299.99, status: 'Active' },
