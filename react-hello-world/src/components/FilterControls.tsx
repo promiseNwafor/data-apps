@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDataTableContext } from '../hooks/useDataTableContext';
 
-export const FilterControls: React.FC = () => {
+export const FilterControls: React.FC = React.memo(() => {
   const { nameFilter, categoryFilter, setNameFilter, setCategoryFilter } = useDataTableContext();
 
   return (
@@ -31,4 +31,4 @@ export const FilterControls: React.FC = () => {
       </div>
     </div>
   );
-};
+});

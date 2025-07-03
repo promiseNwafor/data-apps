@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import type { Item } from '../types';
 
 interface UseDataTableProps {
@@ -11,7 +11,7 @@ const COLUMNS = [
   { key: 'category', label: 'Category' },
   { key: 'value', label: 'Value' },
   { key: 'status', label: 'Status' }
-];
+] as const;
 
 export const useDataTable = ({ data }: UseDataTableProps) => {
   const columns = COLUMNS;
@@ -28,7 +28,7 @@ export const useDataTable = ({ data }: UseDataTableProps) => {
 
   const visibleColumnConfigs = useMemo(() => 
     columns.filter(col => visibleColumns.includes(col.key)),
-    [visibleColumns, columns]
+    [visibleColumns]
   );
 
   const filteredData = useMemo(() => {
@@ -58,32 +58,32 @@ export const useDataTable = ({ data }: UseDataTableProps) => {
     });
   }, [filteredData, sortConfig]);
 
-  const handleColumnToggle = (columnKey: string) => {
+  const handleColumnToggle = useCallback((columnKey: string) => {
     setVisibleColumns(prev => 
       prev.includes(columnKey)
         ? prev.filter(key => key !== columnKey)
         : [...prev, columnKey]
     );
-  };
+  }, []);
 
-  const handleSort = (columnKey: keyof Item) => {
+  const handleSort = useCallback((columnKey: keyof Item) => {
     setSortConfig(prev => ({
       key: columnKey,
       direction: prev.key === columnKey && prev.direction === 'asc' ? 'desc' : 'asc'
     }));
-  };
+  }, []);
 
-  const getSortIcon = (columnKey: string) => {
+  const getSortIcon = useCallback((columnKey: string) => {
     if (sortConfig.key !== columnKey) return '↕';
     return sortConfig.direction === 'asc' ? '↑' : '↓';
-  };
+  }, [sortConfig]);
 
-  const formatCellValue = (item: Item, key: keyof Item) => {
+  const formatCellValue = useCallback((item: Item, key: keyof Item) => {
     if (key === 'value') {
       return `$${item[key].toFixed(2)}`;
     }
     return item[key];
-  };
+  }, []);
 
   return {
     // State

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDataTableContext } from '../hooks/useDataTableContext';
 
-export const ColumnVisibilityControls: React.FC = () => {
+export const ColumnVisibilityControls: React.FC = React.memo(() => {
   const { columns, visibleColumns, handleColumnToggle } = useDataTableContext();
 
   return (
@@ -22,4 +22,4 @@ export const ColumnVisibilityControls: React.FC = () => {
       </div>
     </div>
   );
-};
+});

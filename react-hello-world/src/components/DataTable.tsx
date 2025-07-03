@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDataTableContext } from '../hooks/useDataTableContext';
 import type { Item } from '../types';
 
-export const DataTable: React.FC = () => {
+export const DataTable: React.FC = React.memo(() => {
   const { 
     visibleColumnConfigs, 
     sortedData, 
@@ -11,7 +11,7 @@ export const DataTable: React.FC = () => {
     formatCellValue 
   } = useDataTableContext();
 
-  const renderStatusCell = (status: string) => (
+  const renderStatusCell = useCallback((status: string) => (
     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
       status === 'Active' ? 'bg-green-100 text-green-800' :
       status === 'Inactive' ? 'bg-red-100 text-red-800' :
@@ -19,14 +19,14 @@ export const DataTable: React.FC = () => {
     }`}>
       {status}
     </span>
-  );
+  ), []);
 
-  const renderCellValue = (item: Item, columnKey: string) => {
+  const renderCellValue = useCallback((item: Item, columnKey: keyof Item) => {
     if (columnKey === 'status') {
-      return renderStatusCell(item[columnKey as keyof Item] as string);
+      return renderStatusCell(item[columnKey] as string);
     }
-    return formatCellValue(item, columnKey as keyof Item);
-  };
+    return formatCellValue(item, columnKey);
+  }, [formatCellValue, renderStatusCell]);
 
   return (
     <div className="overflow-x-auto">
@@ -49,7 +49,7 @@ export const DataTable: React.FC = () => {
             <tr key={item.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
               {visibleColumnConfigs.map(column => (
                 <td key={column.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {renderCellValue(item, column.key)}
+                  {renderCellValue(item, column.key as keyof Item)}
                 </td>
               ))}
             </tr>
@@ -58,4 +58,4 @@ export const DataTable: React.FC = () => {
       </table>
     </div>
   );
-};
+});
