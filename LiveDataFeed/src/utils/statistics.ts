@@ -1,4 +1,4 @@
-import { DataPoint } from '@/types/data'
+import type { DataPoint } from '@/types/data'
 
 export const calculateStatistics = (dataPoints: DataPoint[]) => {
   if (dataPoints.length === 0) {
