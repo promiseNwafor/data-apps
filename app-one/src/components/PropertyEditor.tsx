@@ -124,43 +124,72 @@ const PropertyEditor: React.FC<PropertyEditorProps> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Property Editor</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          
-          <PropertyList 
-            properties={fields} 
-            onRemove={removeProperty}
-            onEdit={editProperty}
-          />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+            Property Editor
+          </h1>
+          <p className="text-gray-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto">
+            Create, edit, and visualize properties for your design elements with real-time feedback
+          </p>
+        </div>
 
-          <AddPropertyForm 
-            form={form}
-            control={control}
-            onSubmit={onSubmit}
-          />
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
+          {/* Properties and Form Section */}
+          <div className="xl:col-span-2 space-y-6">
+            <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+              <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg">
+                <CardTitle className="text-xl sm:text-2xl font-bold">Properties</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6">
+                <PropertyList 
+                  properties={fields} 
+                  onRemove={removeProperty}
+                  onEdit={editProperty}
+                />
+              </CardContent>
+            </Card>
 
-          {/* Simple Visualization */}
-          <section aria-labelledby="visualization-heading">
-            <h3 id="visualization-heading" className="text-lg font-semibold mb-4">Visualization</h3>
-            <div 
-              className="p-8 border-2 border-dashed border-muted-foreground/25 rounded-lg bg-muted/20"
-              role="img"
-              aria-label="Property visualization preview"
-              aria-describedby="visualization-description"
-            >
-              <PropertyVisualization properties={fields} />
-            </div>
-            <div id="visualization-description" className="sr-only">
-              Visual representation of your properties. Color property affects background color, size property affects dimensions, and label property affects the displayed text.
-            </div>
-          </section>
+            <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+              <CardHeader className="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-t-lg">
+                <CardTitle className="text-xl sm:text-2xl font-bold">Add New Property</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6">
+                <AddPropertyForm 
+                  form={form}
+                  control={control}
+                  onSubmit={onSubmit}
+                />
+              </CardContent>
+            </Card>
+          </div>
 
-        </CardContent>
-      </Card>
+          {/* Visualization Section */}
+          <div className="xl:col-span-1">
+            <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm h-fit sticky top-6">
+              <CardHeader className="bg-gradient-to-r from-orange-500 to-pink-600 text-white rounded-t-lg">
+                <CardTitle className="text-xl sm:text-2xl font-bold">Live Preview</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6">
+                <section aria-labelledby="visualization-heading">
+                  <div 
+                    className="p-6 sm:p-8 border-2 border-dashed border-purple-200 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50"
+                    role="img"
+                    aria-label="Property visualization preview"
+                    aria-describedby="visualization-description"
+                  >
+                    <PropertyVisualization properties={fields} />
+                  </div>
+                  <div id="visualization-description" className="sr-only">
+                    Visual representation of your properties. Color property affects background color, size property affects dimensions, and label property affects the displayed text.
+                  </div>
+                </section>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
