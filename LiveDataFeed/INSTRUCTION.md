@@ -65,6 +65,6 @@ Help me think clearly about:
 
 ## Getting Started
 
-Let's begin with outlining the goal and plan.
+Let's begin with outlining the goal and plan and identifying the edge cases.
 
 After that, we'll move step by step. Only proceed when I confirm. Challenge me where necessary.

@@ -3,8 +3,11 @@ import { describe, it, expect } from 'vitest'
 import App from './App'
 
 describe('App', () => {
-  it('renders hello world', () => {
+  it('renders live data feed', () => {
     render(<App />)
-    expect(screen.getByText('Hello World')).toBeInTheDocument()
+    expect(screen.getByText('Live Data Feed')).toBeInTheDocument()
+    expect(screen.getByText('Latest Value')).toBeInTheDocument()
+    expect(screen.getByText('Statistics')).toBeInTheDocument()
+    expect(screen.getByText('Historical Data')).toBeInTheDocument()
   })
 })
