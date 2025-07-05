@@ -107,6 +107,13 @@ Help me think clearly about:
 
 ---
 
+## FYI
+
+- Shadcn ui is installed with react-hook-form and zod
+- Make sure to utilise them when necessary
+
+---
+
 ## Getting Started
 
 Start by outlining:
