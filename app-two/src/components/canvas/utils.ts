@@ -7,9 +7,12 @@ export const generateRandomColor = (): string => {
   return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 };
 
+let rectangleCounter = 0;
+
 export const createRectangle = (x: number = 20, y: number = 20): Rectangle => {
+  rectangleCounter++;
   return {
-    id: `rect-${Date.now()}`,
+    id: `rect-${Date.now()}-${rectangleCounter}`,
     x,
     y,
     width: 100,
