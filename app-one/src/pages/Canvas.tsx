@@ -33,14 +33,16 @@ const Canvas = () => {
 
   return (
     <FormProvider {...form}>
-      <div className="flex w-full min-h-screen">
+      <div className="flex w-full min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
         <DynamicElementInspector />
-        <div className="w-full bg-gray-100 flex-1">
-          <div className="p-4">
-            <h2 className="text-lg font-bold">Canvas</h2>
-            <p className="text-sm text-gray-500">Visual representation updates in real-time</p>
+        <div className="flex-1 flex flex-col">
+          <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 p-6 shadow-sm">
+            <h2 className="text-2xl font-bold text-gray-800 mb-1">Canvas</h2>
+            <p className="text-gray-600">Visual representation updates in real-time</p>
           </div>
-          <CanvasGrid />
+          <div className="flex-1 relative">
+            <CanvasGrid />
+          </div>
         </div>
       </div>
     </FormProvider>

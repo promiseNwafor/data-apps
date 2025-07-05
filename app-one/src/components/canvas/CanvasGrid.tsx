@@ -37,28 +37,33 @@ const CanvasGrid: React.FC = () => {
 
   return (
     <div
-      className="w-full h-screen relative"
+      className="w-full h-full relative overflow-hidden"
       role="region"
       aria-label="Canvas area"
       aria-describedby="canvas-description"
       style={{
         backgroundImage: `
-          linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px)
+          linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px)
         `,
-        backgroundSize: '20px 20px',
+        backgroundSize: '24px 24px',
+        backgroundColor: '#fafbff',
       }}
     >
       <div id="canvas-description" className="sr-only">
         Visual canvas showing design element that updates in real-time based on property changes
       </div>
       <div 
-        className="absolute top-0 left-0" 
-        style={elementStyles}
+        className="absolute transition-all duration-200 ease-out shadow-lg rounded-lg border border-white/50 flex items-center justify-center text-white font-medium text-sm backdrop-blur-sm" 
+        style={{
+          ...elementStyles,
+          minWidth: '1px',
+          minHeight: '1px',
+        }}
         role="img"
         aria-label={`Design element: ${values.text}, positioned at ${values.x}, ${values.y}, size ${values.width} by ${values.height}, color ${values.color}, ${values.isVisible ? 'visible' : 'hidden'}`}
       >
-        <p aria-hidden="true">{values.text}</p>
+        <span aria-hidden="true" className="drop-shadow-sm">{values.text}</span>
       </div>
     </div>
   );
