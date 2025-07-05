@@ -1,15 +1,15 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 // Helper function to parse value as number or string
 export const parseValue = (value: string): string | number => {
   const trimmed = value.trim();
   if (trimmed === '') return trimmed;
-  
+
   const num = Number(trimmed);
   return !isNaN(num) && isFinite(num) ? num : trimmed;
 };

@@ -1,6 +1,6 @@
-
-
+import { Route, Routes } from 'react-router';
 import PropertyEditor from './components/PropertyEditor';
+import Canvas from './pages/Canvas';
 
 function App() {
   const dummyProperties = [
@@ -11,13 +11,24 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <PropertyEditor 
-        initialProperties={dummyProperties}
-        onChange={(properties) => console.log('Properties changed:', properties)}
-      />
+    <div className='min-h-screen bg-background'>
+      <Routes>
+        <Route
+          index
+          path='/'
+          element={
+            <PropertyEditor
+              initialProperties={dummyProperties}
+              onChange={properties =>
+                console.log('Properties changed:', properties)
+              }
+            />
+          }
+        />
+        <Route path='/canvas' element={<Canvas />} />
+      </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
