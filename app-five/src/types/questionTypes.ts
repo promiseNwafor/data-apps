@@ -1,0 +1,12 @@
+export enum QuestionType {
+  TEXT = 'TEXT',
+  EMAIL = 'EMAIL',
+  NUMBER = 'NUMBER',
+  MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
+  CHECKBOX = 'CHECKBOX',
+  DROPDOWN = 'DROPDOWN',
+  TEXTAREA = 'TEXTAREA',
+  DATE = 'DATE',
+  PHONE = 'PHONE',
+  URL = 'URL'
+}

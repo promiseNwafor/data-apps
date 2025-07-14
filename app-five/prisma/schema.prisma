@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -13,10 +14,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Form {
   id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
+  title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  questions Question[]
+  responses Response[]
+  
+  @@map("forms")
+}
+
+model Question {
+  id          String      @id @default(cuid())
+  formId      String
+  order       Int
+  type        QuestionType
+  title       String
+  description String?
+  required    Boolean     @default(false)
+  options     Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  form        Form        @relation(fields: [formId], references: [id], onDelete: Cascade)
+  answers     Answer[]
+  
+  @@map("questions")
+}
+
+model Response {
+  id          String   @id @default(cuid())
+  formId      String
+  completedAt DateTime @default(now())
+  
+  form        Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  answers     Answer[]
+  
+  @@map("responses")
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  questionId String
+  responseId String
+  value      String
+  createdAt  DateTime @default(now())
+  
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  response   Response @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  
+  @@map("answers")
+}
+
+enum QuestionType {
+  TEXT
+  EMAIL
+  NUMBER
+  MULTIPLE_CHOICE
+  CHECKBOX
+  DROPDOWN
+  TEXTAREA
+  DATE
+  PHONE
+  URL
 }
