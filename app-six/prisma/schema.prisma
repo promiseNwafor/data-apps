@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Form {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  questions   Question[]
+  responses   Response[]
+  
+  @@map("forms")
+}
+
+model Question {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  type        QuestionType
+  required    Boolean     @default(false)
+  order       Int
+  formId      String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  form        Form        @relation(fields: [formId], references: [id], onDelete: Cascade)
+  answers     Answer[]
+  
+  @@map("questions")
+}
+
+model Response {
+  id        String   @id @default(cuid())
+  formId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  form      Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  answers   Answer[]
+  
+  @@map("responses")
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  value      String
+  questionId String
+  responseId String
+  createdAt  DateTime @default(now())
+  
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  response   Response @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  
+  @@map("answers")
+}
+
+enum QuestionType {
+  TEXT
+  EMAIL
+  NUMBER
+  PHONE
+  MULTIPLE_CHOICE
+  CHECKBOX
+  DROPDOWN
+  DATE
+  RATING
+  YESNO
+}
+
